@@ -75,10 +75,10 @@ UI.Identification : [
 
     UI.SelectionFields : [
         invoiceNumber,
-             vendor,
           status,
           invoiceDate,
-          amount
+          amount,
+        vendor.vendorName,
     ],
 
     UI.PresentationVariant : {
@@ -108,37 +108,6 @@ UI.Identification : [
 
             {
                 $Type : 'UI.DataField',
-                Label : 'Invoice Date',
-                Value : invoiceDate
-            },
-
-            {
-                $Type : 'UI.DataField',
-                Label : 'Due Date',
-                Value : dueDate
-            },
-
-            {
-                $Type : 'UI.DataField',
-                Label : 'Amount',
-                Value : amount
-            },
-
-            {
-                $Type : 'UI.DataField',
-                Label : 'Currency',
-                Value : currency
-            },
-
-            {
-               $Type : 'UI.DataField',
-                  Label : 'Status',
-                  Value : status,
-                 Criticality : criticality
-            },
-
-            {
-                $Type : 'UI.DataField',
                 Label : 'Created By',
                 Value : createdBy
             },
@@ -148,42 +117,31 @@ UI.Identification : [
                 Label : 'Created At',
                 Value : createdAt
             },
-
             {
                 $Type : 'UI.DataField',
-                Label : 'Approved By',
-                Value : approvedBy
+                Value : amount,
+                Label : 'amount',
             },
-
             {
                 $Type : 'UI.DataField',
-                Label : 'Approved At',
-                Value : approvedAt
+                Value : dueDate,
+                Label : 'dueDate',
             },
-
             {
                 $Type : 'UI.DataField',
-                Label : 'Approval Comments',
-                Value : approvalComments
+                Value : invoiceDate,
+                Label : 'invoiceDate',
             },
-
             {
                 $Type : 'UI.DataField',
-                Label : 'Rejected By',
-                Value : rejectedBy
+                Value : currency,
+                Label : 'currency',
             },
-
             {
                 $Type : 'UI.DataField',
-                Label : 'Rejected At',
-                Value : rejectedAt
+                Value : status,
+                Label : 'status',
             },
-
-            {
-                $Type : 'UI.DataField',
-                Label : 'Rejection Reason',
-                Value : rejectionReason
-            }
 
         ]
     },
@@ -196,7 +154,13 @@ UI.Identification : [
         $Type : 'UI.ReferenceFacet',
         Label : 'Invoice Summary',
         Target : '@UI.FieldGroup#GeneralInformation'
-    }
+    },
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : 'Status',
+            ID : 'Status',
+            Target : '@UI.FieldGroup#Status1',
+        },
 
 ],
 
@@ -279,6 +243,28 @@ UI.Identification : [
     }
 
 ],
+    UI.FieldGroup #Status : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : vendor.status,
+                Label : 'status',
+                Criticality : criticality,
+            },
+        ],
+    },
+    UI.FieldGroup #Status1 : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : status,
+                Label : 'status',
+                Criticality : criticality,
+            },
+        ],
+    },
 );
 
 
@@ -421,4 +407,55 @@ annotate service.ApprovalHistory with @(
     ]
 
 );
+
+annotate service.Invoices with {
+    status @(
+        Common.FieldControl : #ReadOnly,
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Vendors',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : status,
+                    ValueListProperty : 'status',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true,
+    )
+};
+
+annotate service.Invoices with {
+    currency @(
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Vendors',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : currency,
+                    ValueListProperty : 'currency',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true,
+)};
+
+annotate service.Vendors with {
+    vendorName @(
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Vendors',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : vendorName,
+                    ValueListProperty : 'vendorName',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true,
+        Common.Label : 'Vendor',
+)};
 
