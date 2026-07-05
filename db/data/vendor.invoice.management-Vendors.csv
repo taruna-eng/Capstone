@@ -1,0 +1,11 @@
+ID,vendorCode,vendorName,email,phone,address,city,state,country,postalCode,currency,taxId,externalVendorId,assignedManager,status,createdAt,createdBy,modifiedAt,modifiedBy
+VENDOR001,V001,Acme Corp,contact@acme.com,+1-555-1001,100 Market Street,New York,New York,USA,10001,USD,US123456789,BP100001,taruna.munjal,APPROVED,2026-07-01T09:00:00Z,admin,2026-07-01T09:00:00Z,admin
+VENDOR002,V002,Tech Solutions Ltd,info@techsolutions.com,+44-20-123456,25 King Street,London,England,UK,SW1A1AA,EUR,UK987654321,BP100002,rahul.sharma,APPROVED,2026-07-01T09:05:00Z,admin,2026-07-01T09:05:00Z,admin
+VENDOR003,V003,Global Supplies,sales@globalsupplies.com,+91-9876543210,45 MG Road,Bengaluru,Karnataka,India,560001,INR,GSTIN123456,BP100003,taruna.munjal,APPROVED,2026-07-01T09:10:00Z,admin,2026-07-01T09:10:00Z,admin
+VENDOR004,V004,New Vendor Inc,support@newvendor.com,+1-555-4004,200 Lake Road,Chicago,Illinois,USA,60601,USD,US564738291,BP100004,amit.kumar,PENDING,2026-07-01T09:15:00Z,admin,2026-07-01T09:15:00Z,admin
+VENDOR005,V005,Quality Parts,quality@parts.com,+49-111-222333,88 Berlin Center,Berlin,Berlin,Germany,10115,EUR,DE564738291,BP100005,rahul.sharma,APPROVED,2026-07-01T09:20:00Z,admin,2026-07-01T09:20:00Z,admin
+VENDOR006,V006,Supply Chain Co,admin@supplychain.com,+44-789654123,55 Oxford Road,Manchester,England,UK,M11AE,GBP,UK112233445,BP100006,taruna.munjal,APPROVED,2026-07-01T09:25:00Z,admin,2026-07-01T09:25:00Z,admin
+VENDOR007,V007,Materials Plus,contact@materialsplus.com,+1-416-5551234,80 Queen Street,Toronto,Ontario,Canada,M5H2N2,USD,CA556677889,BP100007,amit.kumar,SUSPENDED,2026-07-01T09:30:00Z,admin,2026-07-01T09:30:00Z,admin
+VENDOR008,V008,Service Provider,hello@serviceprovider.com,+61-400123456,12 George Street,Sydney,NSW,Australia,2000,AUD,AU998877665,BP100008,rahul.sharma,APPROVED,2026-07-01T09:35:00Z,admin,2026-07-01T09:35:00Z,admin
+VENDOR009,V009,Industrial Goods,info@industrialgoods.com,+33-145678900,90 Industrial Zone,Paris,Ile-de-France,France,75001,EUR,FR556677889,BP100009,taruna.munjal,PENDING,2026-07-01T09:40:00Z,admin,2026-07-01T09:40:00Z,admin
+VENDOR010,V010,Equipment Rental,support@equipmentrental.com,+1-555-888999,500 Business Park,Houston,Texas,USA,77001,USD,US667788990,BP100010,rahul.sharma,APPROVED,2026-07-01T09:45:00Z,admin,2026-07-01T09:45:00Z,admin

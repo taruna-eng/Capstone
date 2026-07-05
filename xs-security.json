@@ -1,0 +1,65 @@
+{
+  "xsappname": "vendor-invoice-management",
+  "tenant-mode": "dedicated",
+
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Administrator Access"
+    },
+    {
+      "name": "$XSAPPNAME.VendorManager",
+      "description": "Vendor Manager Access"
+    },
+    {
+      "name": "$XSAPPNAME.Approver",
+      "description": "Approver Access"
+    },
+    {
+      "name": "$XSAPPNAME.Viewer",
+      "description": "Viewer Access"
+    }
+  ],
+
+  "attributes": [
+    {
+      "name": "vendorCode",
+      "description": "Vendor Assignment",
+      "valueType": "s"
+    }
+  ],
+
+  "role-templates": [
+    {
+      "name": "Admin",
+      "description": "Administrator",
+      "scope-references": [
+        "$XSAPPNAME.Admin"
+      ]
+    },
+    {
+      "name": "VendorManager",
+      "description": "Vendor Manager",
+      "scope-references": [
+        "$XSAPPNAME.VendorManager"
+      ],
+      "attribute-references": [
+        "vendorCode"
+      ]
+    },
+    {
+      "name": "Approver",
+      "description": "Invoice Approver",
+      "scope-references": [
+        "$XSAPPNAME.Approver"
+      ]
+    },
+    {
+      "name": "Viewer",
+      "description": "Read Only User",
+      "scope-references": [
+        "$XSAPPNAME.Viewer"
+      ]
+    }
+  ]
+}

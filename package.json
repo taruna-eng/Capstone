@@ -1,0 +1,71 @@
+{
+  "name": "vendor-invoice-management",
+  "version": "1.0.0",
+  "dependencies": {
+    "@cap-js/hana": "^2",
+    "@sap/cds": "^9",
+    "@sap/xssec": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2.4",
+    "@sap/cds-dk": "^9",
+    "cds-plugin-ui5": "^0.17.0",
+    "rimraf": "^5.0.5",
+    "mbt": "^1.2.49"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-vendor": "cds watch --open vendor/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "undeploy": "cf undeploy vendor-invoice-management --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-invoice": "cds watch --open invoice/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-analytics": "cds watch --open analytics/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "private": true,
+  "cds": {
+    "requires": {
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "admin": {
+            "password": "admin",
+            "roles": [
+              "Admin"
+            ]
+          },
+          "manager": {
+            "password": "manager",
+            "roles": [
+              "VendorManager"
+            ]
+          },
+          "approver": {
+            "password": "approver",
+            "roles": [
+              "Approver"
+            ]
+          },
+          "viewer": {
+            "password": "viewer",
+            "roles": [
+              "Viewer"
+            ]
+          }
+        }
+      },
+      "[production]": {
+        "auth": "xsuaa"
+      }
+    }
+  },
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/vendor",
+    "app/invoice",
+    "app/analytics",
+    "app/invoice"
+  ]
+}
