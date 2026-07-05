@@ -203,7 +203,7 @@ if (!req.user.is("Approver")) {
 
 this.on("rejectInvoice", Invoices, async (req) => {
     // Only Approver can reject
-if (req.user.id !== "Approver") {
+if (!req.user.is("Approver")) {
     return req.error(
         403,
         "Only Approvers can reject invoices."
