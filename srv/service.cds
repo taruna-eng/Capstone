@@ -1,5 +1,5 @@
 using { vendor.invoice.management as db } from '../db/schema';
-
+@requires: 'authenticated-user'
 service VendorInvoiceService {
 
     

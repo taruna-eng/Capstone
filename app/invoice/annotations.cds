@@ -41,7 +41,29 @@ UI.Identification : [
         $Type : 'UI.DataField',
         Label : 'Created At',
         Value : createdAt
+    },
+
+    {
+        $Type : 'UI.DataFieldForAction',
+        Action : 'VendorInvoiceService.submitForApproval',
+        Label : 'Submit for Approval',
+        InvocationGrouping : #Isolated
+    },
+
+    {
+        $Type : 'UI.DataFieldForAction',
+        Action : 'VendorInvoiceService.approveInvoice',
+        Label : 'Approve',
+        InvocationGrouping : #Isolated
+    },
+
+    {
+        $Type : 'UI.DataFieldForAction',
+        Action : 'VendorInvoiceService.rejectInvoice',
+        Label : 'Reject',
+        InvocationGrouping : #Isolated
     }
+
 
 ],
 
@@ -258,6 +280,11 @@ UI.Identification : [
 
 ],
 );
+
+
+
+
+
 
 annotate service.Invoices with {
 

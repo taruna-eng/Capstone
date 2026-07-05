@@ -6,15 +6,49 @@ module.exports = function () {
         ApprovalHistory
     } = this.entities;
 
+
+
+    this.on("READ", Invoices, async (req, next) => {
+    console.log("User ID:", req.user.id);
+    console.log("Roles:", req.user.roles);
+    console.log("Is Admin:", req.user.is("Admin"));
+    console.log("Is VendorManager:", req.user.is("VendorManager"));
+    console.log("AuthInfo:", req.user.authInfo);
+    return next();
+});
+
+
+
+
+
+
+
+
     this.on("submitForApproval", Invoices, async (req) => {
         // Only Admin or Vendor Manager can submit
+
+
+        const util = require("util");
+        
+
+console.log("====================================");
+console.log(util.inspect(req.user, { depth: null }));
+console.log("====================================");
+
+
+
+
+
+
+
+
+
 if (!req.user.is("Admin") && !req.user.is("VendorManager")) {
     return req.error(
         403,
         "You are not authorized to submit invoices."
     );
 }
-
         const { ID } = req.params[0];
 
         // Read Invoice
@@ -101,7 +135,6 @@ if (!req.user.is("Approver")) {
         "Only Approvers can approve invoices."
     );
 }
-
     const { ID } = req.params[0];
     const { comments } = req.data;
 
@@ -170,7 +203,7 @@ if (!req.user.is("Approver")) {
 
 this.on("rejectInvoice", Invoices, async (req) => {
     // Only Approver can reject
-if (!req.user.is("Approver")) {
+if (req.user.id !== "Approver") {
     return req.error(
         403,
         "Only Approvers can reject invoices."

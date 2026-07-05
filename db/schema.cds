@@ -62,7 +62,7 @@ entity Vendors :  managed {
 
 
 entity Invoices :managed {
-    key id: String(36);
+    key ID: String(36);
 
     invoiceNumber      : String(30);
 
