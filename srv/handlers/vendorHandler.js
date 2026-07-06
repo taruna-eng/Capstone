@@ -9,24 +9,27 @@ module.exports = function () {
 
 
 
-      this.before("READ", Vendors, async (req) => {
+      this.on("READ", Vendors, async (req, next) => {
 
-        // Admin can see all vendors
-        if (req.user.is("Admin")) {
-            return;
-        }
+    const result = await next();
 
-        // Vendor Manager can only see assigned vendors
-        if (req.user.is("VendorManager")) {
+    if (!Array.isArray(result)) {
+        return result;
+    }
 
-            req.query.where({
-                assignedManager: req.user.id
-            });
+    result.sort((a, b) =>
+        a.vendorName.localeCompare(b.vendorName)
+    );
 
-        }
+    if (req.user.is("Admin")) {
+        return result;
+    }
 
-    });
+    return result.filter(v =>
+        v.assignedManager === req.user.id
+    );
 
+});
 
 
 
