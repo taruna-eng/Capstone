@@ -38,6 +38,9 @@ service VendorInvoiceService {
    
     entity Attachments as projection on db.Attachments;
 
+    @readonly
+entity DashboardKPIs as projection on db.DashboardKPIs;
+
 
     @readonly
    
@@ -45,7 +48,7 @@ service VendorInvoiceService {
 
 
     @readonly
-  
+    
     entity InvoiceAnalytics as projection on db.InvoiceAnalytics;
 
 

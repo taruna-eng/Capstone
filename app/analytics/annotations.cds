@@ -79,6 +79,23 @@ annotate service.InvoiceAnalytics with @(
             Label : 'approvedCount',
             Value : approvedCount,
         },
+        {
+        $Type : 'UI.DataField',
+        Label : 'Rejected',
+        Value : rejectedCount,
+    },
+
+    {
+        $Type : 'UI.DataField',
+        Label : 'Total Amount',
+        Value : totalAmount,
+    },
+
+    {
+        $Type : 'UI.DataField',
+        Label : 'Currency',
+        Value : currency,
+    }
     ],
 );
 

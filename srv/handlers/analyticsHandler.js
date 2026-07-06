@@ -53,4 +53,52 @@ module.exports = function () {
 
     });
 
+
+
+this.on("READ", "DashboardKPIs", async () => {
+
+    const invoices = await SELECT.from(Invoices);
+
+    const totalInvoices = invoices.length;
+
+    const totalAmount = invoices.reduce(
+        (sum, i) => sum + Number(i.amount),
+        0
+    );
+
+    const pendingApprovals = invoices.filter(
+        i => i.status === "SUBMITTED"
+    ).length;
+
+    const rejectedInvoices = invoices.filter(
+        i => i.status === "REJECTED"
+    ).length;
+
+    return [{
+        ID: cds.utils.uuid(),
+
+        totalInvoices,
+
+        totalAmount,
+
+        pendingApprovals,
+
+        rejectedInvoices,
+
+        invoiceTrend: 12.5,
+
+        defaultCurrency: "INR"
+    }];
+
+});
+
+
+
+
+
+
+
+
+
+
 };

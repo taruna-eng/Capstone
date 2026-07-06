@@ -180,5 +180,24 @@ entity InvoiceAnalytics {
 
 }
 
+@cds.persistence.skip
+entity DashboardKPIs {
+
+    key ID : UUID;
+
+    totalInvoices      : Integer;
+
+    totalAmount        : Decimal(15,2);
+
+    pendingApprovals   : Integer;
+
+    rejectedInvoices   : Integer;
+
+    invoiceTrend       : Decimal(5,2);
+
+    defaultCurrency    : String(3);
+
+}
+
 
     
