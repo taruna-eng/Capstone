@@ -140,6 +140,25 @@ annotate service.Vendors with @(
 
 );
 
+
+// Add this below the above block
+annotate service.Vendors with @(
+    UI.Identification : [
+        {
+            $Type : 'UI.DataFieldForAction',
+            Label : 'Sync from S/4HANA',
+            Action : 'VendorInvoiceService.SyncVendors'
+        }
+    ]
+);
+
+
+
+
+
+
+
+
 annotate service.Vendors with {
     status @(
         Common.Label : 'status',

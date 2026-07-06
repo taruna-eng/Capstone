@@ -72,7 +72,16 @@ module.exports = function () {
     });
 
 
+ this.on("SyncVendors", async (req) => {
 
+    // TODO:
+    // Call S/4HANA API here
+
+    console.log("Sync started...");
+
+    // Example only
+    return "Vendor synchronization completed successfully.";
+});
 
 
 

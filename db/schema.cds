@@ -23,7 +23,7 @@ type ApprovalAction : String enum {
     REJECTED;
 }
 
-
+@odata.draft.enabled
 entity Vendors :  managed {
     Key ID: String(20);
 
