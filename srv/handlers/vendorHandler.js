@@ -33,6 +33,47 @@ module.exports = function () {
 
 
 
+    // ========================================
+    // AFTER READ Vendors
+    // ========================================
+
+    this.after("READ", Vendors, (vendors) => {
+
+        if (!Array.isArray(vendors)) {
+            vendors = [vendors];
+        }
+
+        vendors.forEach(v => {
+
+            switch (v.status) {
+
+                case "APPROVED":
+                    v.criticality = 3;
+                    break;
+
+                case "PENDING":
+                    v.criticality = 2;
+                    break;
+
+                case "SUSPENDED":
+                    v.criticality = 1;
+                    break;
+
+                case "DELETED":
+                    v.criticality = 1;
+                    break;
+
+                default:
+                    v.criticality = 0;
+            }
+
+        });
+
+    });
+
+
+
+
 
 
 

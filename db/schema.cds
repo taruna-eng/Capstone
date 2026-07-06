@@ -57,6 +57,9 @@ entity Vendors :  managed {
 
     invoices         : Association to many Invoices
                            on invoices.vendor = $self;
+    
+
+    criticality : Integer @Core.Computed;
 
 }
 

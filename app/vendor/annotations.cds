@@ -121,36 +121,76 @@ annotate service.Vendors with @(
      {
         $Type : 'UI.DataField',
         Label : 'Status',
-        Value : status
+        Value : status,
+        Criticality : criticality,
     }
 
 
        
     ],
-
-
-    
-
-    UI.PresentationVariant #Default: {
-    SortOrder : [
-        {
-            Property : vendorName,
-            Descending : false
-        }
-    ]
-},
-
-UI.SelectionPresentationVariant : {
-    PresentationVariant : '@UI.PresentationVariant#Default'
-}
-
-
-
-
-
+    UI.SelectionFields : [
+        status,
+        country,
+        currency,
+        vendorName,
+    ],
 
 
 
 
 );
+
+annotate service.Vendors with {
+    status @(
+        Common.Label : 'status',
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Vendors',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : status,
+                    ValueListProperty : 'status',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true,
+    )
+};
+
+annotate service.Vendors with {
+    country @(
+        Common.Label : 'country',
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Vendors',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : country,
+                    ValueListProperty : 'country',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true,
+    )
+};
+
+annotate service.Vendors with {
+    currency @(
+        Common.Label : 'currency',
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Vendors',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : currency,
+                    ValueListProperty : 'currency',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true,
+    )
+};
 
