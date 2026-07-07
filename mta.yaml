@@ -3,129 +3,227 @@ ID: vendor-invoice-management
 description: A simple CAP project.
 version: 1.0.0
 modules:
-- name: vendor-invoice-management-srv
-  type: nodejs
-  path: gen/srv
-  requires:
-  - name: vendor-invoice-management-auth
-  - name: vendor-invoice-management-db
-  provides:
-  - name: srv-api
-    properties:
-      srv-url: ${default-url}
-  parameters:
-    buildpack: nodejs_buildpack
-    instances: 1
-  build-parameters:
-    builder: npm-ci
-- name: vendor-invoice-management-db-deployer
-  type: hdb
-  path: gen/db
-  requires:
-  - name: vendor-invoice-management-db
-  parameters:
-    buildpack: nodejs_buildpack
-- name: vendor-invoice-management-app-content
-  type: com.sap.application.content
-  path: .
-  requires:
-  - name: vendor-invoice-management-repo-host
-    parameters:
-      content-target: true
-  build-parameters:
-    build-result: resources
+  - name: vendor-invoice-management-srv
+    type: nodejs
+    path: gen/srv
     requires:
-    - artifacts:
-      - vendor.zip
-      name: vendor
-      target-path: resources/
-    - artifacts:
-      - invoice.zip
-      name: invoice
-      target-path: resources/
-    - artifacts:
-      - analytics.zip
-      name: analytics
-      target-path: resources/
-- name: vendor
-  type: html5
-  path: app/vendor
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
-- name: invoice
-  type: html5
-  path: app/invoice
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
-- name: analytics
-  type: html5
-  path: app/analytics
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
-resources:
-- name: vendor-invoice-management-auth
-  type: org.cloudfoundry.managed-service
-  parameters:
-    config:
-      oauth2-configuration:
-        credential-types:
-        - binding-secret
-        - x509
-      tenant-mode: dedicated
-      xsappname: vendor-invoice-management-${org}-${space}
-    path: ./xs-security.json
-    service: xsuaa
-    service-plan: application
-- name: vendor-invoice-management-db
-  type: com.sap.xs.hdi-container
-  parameters:
-    service: hana
-    service-plan: hdi-shared
-- name: vendor-invoice-management-repo-host
-  type: org.cloudfoundry.managed-service
-  parameters:
-    service: html5-apps-repo
-    service-name: vendor-invoice-management-html5-service
-    service-plan: app-host
-- name: vendor-invoice-management-destination-service
-  type: org.cloudfoundry.managed-service
-  parameters:
-    config:
-      HTML5Runtime_enabled: false
-      init_data:
-        instance:
-          destinations:
-          - Authentication: NoAuthentication
-            Name: ui5
-            ProxyType: Internet
+      - name: vendor-invoice-management-auth
+      - name: vendor-invoice-management-db
+      - name: vendor-invoice-management-destination-service
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+      instances: 1
+    build-parameters:
+      builder: npm-ci
+  - name: vendor-invoice-management-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: vendor-invoice-management-db
+    parameters:
+      buildpack: nodejs_buildpack
+  - name: vendor-invoice-management-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: vendor-invoice-management-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - vendor.zip
+          name: vendor
+          target-path: resources/
+        - artifacts:
+            - invoice.zip
+          name: invoice
+          target-path: resources/
+        - artifacts:
+            - analytics.zip
+          name: analytics
+          target-path: resources/
+  - name: vendor
+    type: html5
+    path: app/vendor
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+  - name: invoice
+    type: html5
+    path: app/invoice
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+  - name: analytics
+    type: html5
+    path: app/analytics
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+
+  - name: vendor-invoice-management-app-deployer
+    type: com.sap.application.content
+    path: gen
+    build-parameters:
+      build-result: app/
+      requires:
+        - name: analytics
+          artifacts:
+            - analytics.zip
+          target-path: app/
+        - name: invoice
+          artifacts:
+            - invoice.zip
+          target-path: app/
+        - name: vendor
+          artifacts:
+            - vendor.zip
+          target-path: app/
+        - name: analytics
+        - name: invoice
+        - name: vendor
+    requires:
+      - name: vendor-invoice-management-auth
+      - name: srv-api
+      - name: vendor-invoice-management-repo-host
+        parameters:
+          content-target: true
+          config:
+            HTML5Runtime_enabled: true
+      
+    parameters:
+      config:
+        destinations:
+          - Name: srv-api
+            URL: ~{srv-api/srv-url}
+            Authentication: NoAuthentication
             Type: HTTP
-            URL: https://ui5.sap.com
+            ProxyType: Internet
+            HTML5.ForwardAuthToken: true
+            HTML5.DynamicDestination: true
+
+  - name: vendor-invoice-management-destinations
+    type: com.sap.application.content
+    requires:
+      - name: vendor-invoice-management-auth
+        parameters:
+          service-key:
+            name: vendor-invoice-management-auth-key
+      - name: vendor-invoice-management-repo-host
+        parameters:
+          service-key:
+            name: vendor-invoice-management-html5-repo-host-key
+      - name: srv-api
+      - name: vendor-invoice-management-destination-service
+        parameters:
+          content-target: true
+    build-parameters:
+      no-source: true
+    parameters:
+      content:
+        instance:
           existing_destinations_policy: update
-      version: 1.0.0
-    service: destination
-    service-name: vendor-invoice-management-destination-service
-    service-plan: lite
+          destinations:
+            - Name: vendor-invoice-management-html5-repository
+              ServiceInstanceName: vendor-invoice-management-html5-service
+              ServiceKeyName: vendor-invoice-management-html5-repo-host-key
+              sap.cloud.service: vendorinvoicemanagement.service
+            - Name: vendor-invoice-management-auth
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: vendor-invoice-management-auth
+              ServiceKeyName: vendor-invoice-management-auth-key
+              sap.cloud.service: vendorinvoicemanagement.service
+resources:
+  - name: vendor-invoice-management-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        oauth2-configuration:
+          credential-types:
+            - binding-secret
+            - x509
+        tenant-mode: dedicated
+        xsappname: vendor-invoice-management-${org}-${space}
+        role-collections:
+          - name: 'Admin (vendor-invoice-management ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.Admin'
+          - name: 'VendorManager (vendor-invoice-management ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.VendorManager'
+          - name: 'Approver (vendor-invoice-management ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.Approver'
+      path: ./xs-security.json
+      service: xsuaa
+      service-plan: application
+  - name: vendor-invoice-management-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: vendor-invoice-management-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: vendor-invoice-management-html5-service
+      service-plan: app-host
+  - name: vendor-invoice-management-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: false
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+            existing_destinations_policy: update
+        version: 1.0.0
+      service: destination
+      service-name: vendor-invoice-management-destination-service
+      service-plan: lite
+    requires:
+      - name: srv-api
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
 build-parameters:
   before-all:
-  - builder: custom
-    commands:
-    - npm ci
-    - npx cds build --production
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production

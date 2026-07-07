@@ -1,7 +1,6 @@
 {
   "xsappname": "vendor-invoice-management",
   "tenant-mode": "dedicated",
-
   "scopes": [
     {
       "name": "$XSAPPNAME.Admin",
@@ -20,7 +19,6 @@
       "description": "Viewer Access"
     }
   ],
-
   "attributes": [
     {
       "name": "vendorCode",
@@ -28,7 +26,6 @@
       "valueType": "s"
     }
   ],
-
   "role-templates": [
     {
       "name": "Admin",
